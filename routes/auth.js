@@ -1,11 +1,30 @@
 const { Router } = require('express');
 const router = Router();
 
-router.get('/',(req, res)=>{
-    console.log('se requiere /');
+router.post('/',(req, res)=>{
+
     res.json({
-        ok:true
+        ok:true,
+        msg: 'login'
     })
 });
+
+router.post('/new',(req, res)=>{
+    
+    res.json({
+        ok:true,
+        msg: 'registro'
+    })
+});
+
+router.get('/renew',(req, res)=>{
+    
+    res.json({
+        ok:true,
+        msg: 'renew'
+    })
+});
+
+
 
 module.exports = router;
