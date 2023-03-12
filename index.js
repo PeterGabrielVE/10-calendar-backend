@@ -5,6 +5,10 @@ const app = express();
 
 app.use( express.static('public') );
 
+//rutas
+app.use('/api/auth', require('./routes/auth'));
+//eventos
+
 /*app.get('/',(req, res)=>{
     console.log('se requiere /');
     res.json({
