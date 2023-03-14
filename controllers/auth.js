@@ -1,6 +1,8 @@
 const { response } = require('express');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
+const { generarJWT } = require('../helpers/jwt');
+
 const crearUsuario = async(req, res = express.response )=>{
 
     const { email, password } = req.body;
@@ -24,11 +26,14 @@ const crearUsuario = async(req, res = express.response )=>{
 
         await usuario.save();
 
+        const token = await generarJWT( usuario.id, usuario.name);
+
         res.status(201).json({
             ok:true,
             uid: usuario._id,
             name: usuario.name,
-            msg: 'registro'
+            msg: 'registro',
+            token
         })
     } catch( error ){
         res.status(500).json({
@@ -42,7 +47,7 @@ const crearUsuario = async(req, res = express.response )=>{
 const loginUsuario = async(req, res = express.response )=>{
 
     const { email, password } = req.body;
-    try{
+    //try{
 
         const usuario = await User.findOne({ email });
         
@@ -64,19 +69,21 @@ const loginUsuario = async(req, res = express.response )=>{
         }
 
         // Generar nuestro JWT
+        const token = await generarJWT( usuario.id, usuario.name);
 
         res.json({
             ok:true,
             uid: usuario.id,
-            name: usuario.name
+            name: usuario.name,
+            token
         });
-    }catch( error ){
+    /*}catch( error ){
         res.status(500).json({
             ok: false,
             error: error,
             msg: 'Por favor comuniquese con el administrador'
         })
-    }
+    }*/
 }
 
 const revalidarToken = (req, res = express.response )=>{
