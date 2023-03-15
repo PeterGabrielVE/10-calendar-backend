@@ -1,5 +1,4 @@
 const { response } = require('express');
-const bcrypt = require('bcryptjs');
 const Event = require('../models/Event');
 
 
@@ -32,9 +31,12 @@ const getEvent = async(req, res = express.response )=>{
 
 
     try{
+        const events = await Event.find()
+                                .populate('user','name');
+
         res.json({
-            ok:true,
-            msg: 'Get Event'
+            ok: true,
+            events
         });
     }catch( error ){
         res.status(500).json({
