@@ -16,7 +16,9 @@ app.use( express.json() );
 
 //rutas
 app.use('/api/auth', require('./routes/auth'));
-//eventos
+app.use('/api/events', require('./routes/events'));
+
+
 
 /*app.get('/',(req, res)=>{
     console.log('se requiere /');
