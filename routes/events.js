@@ -3,6 +3,8 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 const { getEvent, createEvent, updateEvent, deleteEvent } =  require('../controllers/events');
 const router = Router();
 
+router.use( validarJWT );
+
 // obtener eventos
 router.get('/', getEvent);
 
