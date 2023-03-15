@@ -1,23 +1,31 @@
 const { response } = require('express');
 const bcrypt = require('bcryptjs');
 const Event = require('../models/Event');
-const { generarJWT } = require('../helpers/jwt');
 
-const createEvent = async(req, res = express.response )=>{
 
-    try{
+const createEvent = async ( req, res = response ) => {
+
+    const event = new Event( req.body );
+
+    try {
+
+        event.user = req.uid;
+        
+        const eventoGuardado = await event.save();
 
         res.json({
-            ok:true,
-            msg: 'Create Event'
-        });
-    } catch( error ){
+            ok: true,
+            evento: eventoGuardado
+        })
+
+
+    } catch (error) {
+        console.log(error)
         res.status(500).json({
             ok: false,
-            msg: 'Por favor comuniquese con el administrador'
-        })
+            msg: 'Hable con el administrador'
+        });
     }
-    
 }
 
 const getEvent = async(req, res = express.response )=>{

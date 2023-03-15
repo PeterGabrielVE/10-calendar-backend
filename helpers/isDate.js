@@ -5,13 +5,13 @@ const isDate = ( value ) => {
     if ( !value ) {
         return false;
     }
-
-    const fecha = moment( value );
+    return true;
+    /*const fecha = moment( value );
     if ( fecha.isValid() ) {
         return true;
     } else {
         return false;
-    }
+    }*/
     
 }
 
