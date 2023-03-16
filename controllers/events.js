@@ -49,18 +49,46 @@ const getEvent = async(req, res = express.response )=>{
 
 const updateEvent = async(req, res = express.response )=>{
 
+    const eventoId = req.params.id;
+    const uid = req.uid;
 
-    try{
+    try {
+
+        const evento = await Event.findById( eventoId );
+
+        if ( !evento ) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Evento no existe por ese id'
+            });
+        }
+
+        if ( evento.user.toString() !== uid ) {
+            return res.status(401).json({
+                ok: false,
+                msg: 'No tiene privilegio de editar este evento'
+            });
+        }
+
+        const nuevoEvento = {
+            ...req.body,
+            user: uid
+        }
+
+        const eventoActualizado = await Event.findByIdAndUpdate( eventoId, nuevoEvento, { new: true } );
+
         res.json({
-            ok:true,
-            msg: 'Update Event'
+            ok: true,
+            evento: eventoActualizado
         });
-    }catch( error ){
+
+        
+    } catch (error) {
+        console.log(error);
         res.status(500).json({
             ok: false,
-            error: error,
-            msg: 'Por favor comuniquese con el administrador'
-        })
+            msg: 'Hable con el administrador'
+        });
     }
 }
 
